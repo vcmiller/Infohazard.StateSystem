@@ -1,0 +1,15 @@
+{
+  "name": "com.infohazard.statesystem",
+  "displayName": "Infohazard.StateSystem",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "description": "A system for creating and applying states which override a component's values.",
+  "keywords": [],
+  "repository": {
+    "url": "https://github.com/vcmiller/Infohazard.StateSystem.git",
+    "type": "git",
+    "revision": "ef1bd531b680871f97a0a8aae37ace80448b6291"
+  },
+  "dependencies": {
+  }
+}
