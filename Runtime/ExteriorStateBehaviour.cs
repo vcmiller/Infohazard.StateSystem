@@ -31,15 +31,26 @@ namespace Infohazard.StateSystem {
         [SerializeField, FormerlySerializedAs("states")]
         protected StateList _states;
 
+        private bool _initialized = false;
+
         public Type Type => _component ? _component.GetType() : typeof(Component);
 
         protected virtual void Awake() {
+            Initialize();
+        }
+
+        private void Initialize() {
+            if (_initialized) return;
+            _initialized = true;
             _states.Initialize(_component);
         }
 
         public bool HasState(string stateName) => _states.HasState(stateName);
         public bool IsStateActive(string stateName) => _states.IsStateActive(stateName);
-        public void SetStateActive(string stateName, bool value) => _states.SetStateActive(stateName, value);
+        public void SetStateActive(string stateName, bool value) {
+            Initialize();
+            _states.SetStateActive(stateName, value);
+        }
     }
 
 }
