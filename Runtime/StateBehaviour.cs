@@ -47,9 +47,12 @@ namespace Infohazard.StateSystem {
         private void Initialize() {
             if (_initialized) return;
             _initialized = true;
+            
+            InitializeDefaultValues();
             _states.Initialize(this);
         }
 
+        protected virtual void InitializeDefaultValues() { }
         public bool HasState(string stateName) => _states.HasState(stateName);
         public bool IsStateActive(string stateName) => _states.IsStateActive(stateName);
         public void SetStateActive(string stateName, bool value) {
