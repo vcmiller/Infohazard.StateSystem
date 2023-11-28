@@ -31,6 +31,7 @@ namespace Infohazard.StateSystem {
         private IStateBehaviour[] _behaviours;
         private Dictionary<string, bool> _statesActive;
         private List<StateManager> _children;
+        private bool _initialized;
 
         public StateManager Parent {
             get => _parent;
@@ -46,6 +47,13 @@ namespace Infohazard.StateSystem {
         }
 
         private void Awake() {
+            Initialize();
+        }
+
+        private void Initialize() {
+            if (_initialized) return;
+
+            _initialized = true;
             _statesActive = new Dictionary<string, bool>();
             _children = new List<StateManager>();
             RefreshStateBehaviours();
@@ -79,14 +87,21 @@ namespace Infohazard.StateSystem {
         }
 
         public void RefreshStateBehaviours() {
+            if (!_initialized) {
+                Initialize();
+                return;
+            }
+            
             _behaviours = GetComponentsInChildren<IStateBehaviour>(true);
             ApplyInternalStates();
         }
 
-        public bool IsStateActiveOnAny(string state) => _behaviours.Any(b => b.IsStateActive(state));
-        public bool IsStateActiveOnAll(string state) => _behaviours.All(b => b.IsStateActive(state));
-        public void ForgetState(string state) => _statesActive.Remove(state);
+        public bool IsStateActiveOnAny(string state) => _behaviours?.Any(b => b.IsStateActive(state)) ?? false;
+        public bool IsStateActiveOnAll(string state) => _behaviours?.All(b => b.IsStateActive(state)) ?? false;
+        public void ForgetState(string state) => _statesActive?.Remove(state);
         public void SetStateActive(string state, bool active) {
+            Initialize();
+            
             if (_statesActive.TryGetValue(state, out bool curValue) && curValue == active) return;
 
             _statesActive[state] = active;
