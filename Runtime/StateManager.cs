@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
-// 
+//
 // Copyright (c) 2022-present Vincent Miller
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,7 +27,7 @@ using UnityEngine;
 namespace Infohazard.StateSystem {
     public class StateManager : MonoBehaviour {
         [SerializeField] private StateManager _parent;
-        
+
         private IStateBehaviour[] _behaviours;
         private Dictionary<string, bool> _statesActive;
         private List<StateManager> _children;
@@ -61,7 +61,7 @@ namespace Infohazard.StateSystem {
 
         private void Start() {
             if (!_parent) return;
-            
+
             StateManager tempParent = _parent;
             _parent = null;
             Parent = tempParent;
@@ -72,7 +72,7 @@ namespace Infohazard.StateSystem {
                 Parent._children.Remove(this);
             }
 
-            foreach (StateManager child in _children) {
+            foreach (StateManager child in _children.ToList()) {
                 child.Parent = null;
             }
         }
@@ -91,7 +91,7 @@ namespace Infohazard.StateSystem {
                 Initialize();
                 return;
             }
-            
+
             _behaviours = GetComponentsInChildren<IStateBehaviour>(true);
             ApplyInternalStates();
         }
@@ -101,7 +101,7 @@ namespace Infohazard.StateSystem {
         public void ForgetState(string state) => _statesActive?.Remove(state);
         public void SetStateActive(string state, bool active) {
             Initialize();
-            
+
             if (_statesActive.TryGetValue(state, out bool curValue) && curValue == active) return;
 
             _statesActive[state] = active;
