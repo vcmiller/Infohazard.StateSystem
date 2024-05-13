@@ -44,7 +44,7 @@ namespace Infohazard.StateSystem {
         }
 
         private void TriggerVolume_TriggerExited(GameObject other) {
-            if (other.TryGetComponent(out StateManager manager)) {
+            if (other != null && other.TryGetComponent(out StateManager manager)) {
                 _occupantActiveCount.TryGetValue(manager, out int count);
                 if (count <= 1) {
                     _occupantActiveCount.Remove(manager);
