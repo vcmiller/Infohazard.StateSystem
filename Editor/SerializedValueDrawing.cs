@@ -144,7 +144,7 @@ namespace Infohazard.StateSystem.Editor {
                     newValue = new Quaternion(v.x, v.y, v.z, v.w);
                     break;
                 case SerializableType.Color:
-                    newValue = EditorGUILayout.ColorField(label, (Color)value);
+                    newValue = EditorGUILayout.ColorField(label, (Color)value, true, true, true);
                     break;
                 case SerializableType.LayerMask:
                     LayerMask tempMask = EditorGUILayout.MaskField(label,
