@@ -99,16 +99,20 @@ namespace Infohazard.StateSystem {
         public bool IsStateActiveOnAny(string state) => _behaviours?.Any(b => b.IsStateActive(state)) ?? false;
         public bool IsStateActiveOnAll(string state) => _behaviours?.All(b => b.IsStateActive(state)) ?? false;
         public void ForgetState(string state) => _statesActive?.Remove(state);
-        public void SetStateActive(string state, bool active) {
+        public bool SetStateActive(string state, bool active) {
             Initialize();
 
-            if (_statesActive.TryGetValue(state, out bool curValue) && curValue == active) return;
+            if (_statesActive.TryGetValue(state, out bool curValue) && curValue == active) {
+                return false;
+            }
 
             _statesActive[state] = active;
 
             if (!_parent) {
                 SetStateActiveInternal(state, active);
             }
+
+            return true;
         }
 
         private void SetStateActiveInternal(string state, bool active) {
